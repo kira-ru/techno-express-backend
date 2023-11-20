@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "outDir": "./dist/out-tsc",
+    "baseUrl": "./src/",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "target": "es2017",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "paths": {
+      "@layout/*": ["app/layout-module/*"],
+      "@store/*": ["app/store-module/*"],
+      "@shared/*": ["app/shared-module/*"],
+      "@console/*": ["app/console-module/*"],
+      "@signature/*": ["app/signature-module/*"],
+      "@delegates/*": ["app/delegate-module/*"],
+      "@dao/*": ["app/dao/*"],
+      "@core/*": ["app/core/*"],
+    }
+  }
+}
