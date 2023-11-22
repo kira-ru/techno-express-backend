@@ -18,6 +18,7 @@ speed-measure-plugin*.json
 .c9/
 *.launch
 .settings/
+.eslintcache
 *.sublime-workspace
 
 # IDE - VSCode

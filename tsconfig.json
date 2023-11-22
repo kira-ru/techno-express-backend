@@ -1,38 +1,29 @@
 {
+  "include": ["main.ts",".eslintrc.json", "src/**/*"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
+    "resolveJsonModule": true,
+    "allowJs": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "outDir": "./dist/out-tsc",
-    "baseUrl": "./src/",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "noPropertyAccessFromIndexSignature": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "ES6",
+    "moduleResolution": "Node",
     "importHelpers": true,
     "typeRoots": [
       "node_modules/@types"
     ],
     "target": "es2017",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
-    "paths": {
-      "@layout/*": ["app/layout-module/*"],
-      "@store/*": ["app/store-module/*"],
-      "@shared/*": ["app/shared-module/*"],
-      "@console/*": ["app/console-module/*"],
-      "@signature/*": ["app/signature-module/*"],
-      "@delegates/*": ["app/delegate-module/*"],
-      "@dao/*": ["app/dao/*"],
-      "@core/*": ["app/core/*"],
-    }
+    "paths": {}
   }
 }
