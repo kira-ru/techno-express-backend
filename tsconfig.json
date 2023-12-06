@@ -1,11 +1,12 @@
 {
-  "include": ["main.ts",".eslintrc.json", "src/**/*"],
+  "include": [
+    "src/main.ts",".eslintrc.json", "src/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "resolveJsonModule": true,
     "allowJs": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -25,5 +26,8 @@
     ],
     "target": "es2017",
     "paths": {}
+  },
+  "ts-node": {
+    "esm": true
   }
 }

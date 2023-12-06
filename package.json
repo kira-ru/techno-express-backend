@@ -2,10 +2,11 @@
   "name": "techno-express-backend",
   "version": "0.0.1",
   "description": "",
-  "main": "main.ts",
+  "main": "src/main.ts",
   "type": "module",
   "scripts": {
-    "start": "ts-node --esm main.ts",
+    "dev": "nodemon --experimental-specifier-resolution=node src/main.ts",
+    "start": "ts-node --esm src/main.ts",
     "build": "tsc",
     "prebuild": "npm run lint",
     "lint:fix": "eslint --cache --ext .ts . --fix"
