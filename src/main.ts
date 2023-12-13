@@ -1,6 +1,6 @@
 import express from 'express'
 import process from 'process'
-import {DB} from './config/database'
+import {DB} from '@/config/database'
 
 const app = express()
 

@@ -1,33 +1,19 @@
 {
-  "include": [
-    "src/main.ts",".eslintrc.json", "src/**/*"],
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": true,
-    "outDir": "./dist/out-tsc",
+    "target": "es5",
+    "module": "commonjs",
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": false,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "module": "ES6",
-    "moduleResolution": "Node",
-    "importHelpers": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "target": "es2017",
-    "paths": {}
-  },
-  "ts-node": {
-    "esm": true
+    "allowImportingTsExtensions": true,
+    "outDir": "build",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   }
 }
