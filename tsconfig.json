@@ -1,4 +1,7 @@
 {
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
@@ -14,6 +17,10 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/sequelize/types"
+    ]
   }
 }

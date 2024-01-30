@@ -1,13 +1,23 @@
 import express from 'express'
 import process from 'process'
-import {DB} from '@/config/database'
+import cors from 'cors'
+import {sequelize} from '@/config/database'
+import {setTableRelationships} from '@/models/utils/setTableRelationships.ts'
+
 
 const app = express()
+app.use(cors())
+app.use(express.json())
+
+app.get('/', (req, res) => {
+  res.json({ message: 'hello' })
+})
 
 try {
-  DB.authenticate()
+  sequelize.authenticate()
       .then(() => {
-        return DB.sync();
+        setTableRelationships();
+        return sequelize.sync();
       })
       .then(() => {
         app.listen(process.env.PORT, () => {
@@ -15,5 +25,5 @@ try {
         })
       })
 } catch(e) {
-  console.error(e)
+  console.error('Unable to connect to the database:', e);
 }
