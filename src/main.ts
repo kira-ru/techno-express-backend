@@ -1,22 +1,24 @@
+import {errorMiddleware} from '@/middlewares/error.middleware.ts'
 import express from 'express'
 import process from 'process'
 import cors from 'cors'
 import {sequelize} from '@/config/database'
 import {setTableRelationships} from '@/models/utils/setTableRelationships.ts'
 import {routes} from '@/routes'
-import errorMiddleware from '@/middlewares/error.middleware.ts'
 
 const app = express()
+
+app.use(function(req, res, next) {
+  console.log('Запрос: ' + req.method + ' ' + req.url);
+  next();
+});
+
 app.use(cors())
 app.use(express.json())
 app.use(routes)
 
 //middleware
 app.use(errorMiddleware);
-
-app.get('/', (req, res) => {
-  res.json({ message: 'hello' })
-})
 
 try {
   sequelize.authenticate()

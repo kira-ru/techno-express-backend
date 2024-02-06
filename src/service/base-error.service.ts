@@ -5,8 +5,9 @@ export class BaseErrorService extends Error {
 
   constructor(status, message) {
     super();
-    this.status = status
-    this.message = message
+    this.status = status;
+    this.message = message;
+    Object.setPrototypeOf(this, BaseErrorService.prototype);
   }
 
   static badRequest(message): Error {

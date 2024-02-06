@@ -1,4 +1,4 @@
-import {AuthController} from '@/controllers/auth.ts'
+import {AuthController} from '@/controllers/auth.controller.ts'
 import {Router} from 'express'
 
 enum Routes {
