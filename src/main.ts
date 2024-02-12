@@ -5,6 +5,7 @@ import cors from 'cors'
 import {sequelize} from '@/config/database'
 import {setTableRelationships} from '@/models/utils/setTableRelationships.ts'
 import {routes} from '@/routes'
+import fileUploader from 'express-fileupload'
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(function(req, res, next) {
 
 app.use(cors())
 app.use(express.json())
+app.use(fileUploader())
 app.use(routes)
 
 //middleware
