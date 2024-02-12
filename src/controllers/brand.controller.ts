@@ -1,5 +1,5 @@
 import {Create, GetAll} from '@/controllers/interfaces'
-import {Brand, DeviceType} from '@/models/db'
+import {Brand} from '@/models/db'
 import {BaseErrorService} from '@/service/base-error.service.ts'
 import {NextFunction, Request, Response} from "express"
 
@@ -11,7 +11,7 @@ class BrandController implements Create, GetAll {
 
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     if (!("name" in req.body)) return next(BaseErrorService.badRequest('Отсутствует поле name'))
-    const brand = await DeviceType.create(req.body);
+    const brand = await Brand.create(req.body);
     res.json(brand);
   }
 }

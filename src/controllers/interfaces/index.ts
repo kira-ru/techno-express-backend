@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express"
 
-export type Controller = (req: Request, res: Response, next?: NextFunction) => Promise<void> | void;
+export type Controller = (req: Request, res: Response<unknown>, next?: NextFunction) => Promise<void> | Promise<unknown> | unknown | void;
 export interface Get {
   get: Controller
 }

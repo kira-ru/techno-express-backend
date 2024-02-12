@@ -1,5 +1,6 @@
 import {errorMiddleware} from '@/middlewares/error.middleware.ts'
 import express from 'express'
+import {resolve} from 'path'
 import process from 'process'
 import cors from 'cors'
 import {sequelize} from '@/config/database'
@@ -13,10 +14,10 @@ app.use(function(req, res, next) {
   console.log('Запрос: ' + req.method + ' ' + req.url);
   next();
 });
-
+app.use(fileUploader({debug: true}))
 app.use(cors())
 app.use(express.json())
-app.use(fileUploader())
+app.use(express.static(resolve(__dirname, 'static')))
 app.use(routes)
 
 //middleware
