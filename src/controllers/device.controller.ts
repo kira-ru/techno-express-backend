@@ -26,9 +26,9 @@ export class DeviceController implements Create, GetAll {
   }
 
   async getAll(req: Request, res: Response): Promise<Response<typeof Device[]>> {
-    const {brandId, deviceTypeId, limitQuery, pageQuery} = req.query;
-    const limit = limitQuery ? +limitQuery.toString : 10;
-    const page = pageQuery ? +pageQuery.toString : 1;
+    const {brandId, deviceTypeId, limit: limitQuery, page: pageQuery} = req.query;
+    const limit = limitQuery ? +limitQuery : 10;
+    const page = pageQuery ? +pageQuery : 1;
     const offset = (limit * page) - limit;
     if (!brandId && !deviceTypeId) return res.json(await Device.findAll({limit, offset}));
     if(!brandId && deviceTypeId) return res.json(await Device.findAll({limit, offset,where: { DeviceTypeId: deviceTypeId }}));
