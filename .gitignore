@@ -1,3 +1,6 @@
+# static
+src/static
+
 # compiled output
 /dist
 /out-tsc
