@@ -1,10 +1,16 @@
-import {DeviceDTO, RequestWithFiles, DeviceInformation} from '@/controllers/device/device.types.ts';
+import {
+  DeviceDTO,
+  RequestWithFiles,
+  DeviceI,
+  DeviceInformation
+} from '@/controllers/device/device.types.ts';
 import {Create, Get, GetAll} from '@/controllers/interfaces';
 import {Device, DeviceInfo} from '@/models/db';
 import {BaseErrorService} from '@/service/base-error.service.ts';
 import {Response, Request, NextFunction} from 'express';
 import {resolve} from "path";
 import {v4 as uuidv4} from 'uuid';
+import {Model} from "sequelize";
 
 export class DeviceController implements Create, GetAll, Get {
   async create(req: RequestWithFiles, res: Response, next: NextFunction): Promise<Response<DeviceDTO>> {
@@ -15,11 +21,11 @@ export class DeviceController implements Create, GetAll, Get {
         brandId,
         deviceTypeId,
         info
-      } = req.body as DeviceDTO;
+      } = req.body as DeviceI;
       // @ts-expect-error img
       const { img } = req.files;
       const imageFileName = uuidv4() + ".jpg";
-      img.mv(resolve(__dirname, '..', 'static', imageFileName));
+      img.mv(resolve(__dirname, '../..', 'static', imageFileName));
 
       const device = await Device.create({
         name,
@@ -27,19 +33,15 @@ export class DeviceController implements Create, GetAll, Get {
         BrandId: brandId,
         DeviceTypeId: deviceTypeId,
         img: imageFileName
-      });
+      }) as Model<DeviceDTO>;
 
       if (info) return res.json(device);
       const allInfo: DeviceInformation[] = JSON.parse(info);
-      allInfo.forEach(({
-                         title,
-                         description,
-                         deviceId
-                       }) => {
+      allInfo.forEach(info => {
         DeviceInfo.create({
-          title,
-          description,
-          deviceId
+          title: info.title,
+          description: info.description,
+          deviceId: device.dataValues.id,
         });
       });
       return res.json(device);

@@ -1,5 +1,5 @@
-import {sequelize} from '@/config/database'
-import {DataTypes} from 'sequelize'
+import {sequelize} from '@/config/database';
+import {DataTypes} from 'sequelize';
 
 export const Device = sequelize.define("Device", {
   id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -7,6 +7,6 @@ export const Device = sequelize.define("Device", {
   price: {type: DataTypes.INTEGER, allowNull: false},
   rating: {type: DataTypes.INTEGER, defaultValue: 0 },
   img: {type: DataTypes.STRING, allowNull: false},
-})
+});
 
 

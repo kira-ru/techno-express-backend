@@ -6,7 +6,7 @@ import {Router} from 'express';
 
 enum Routes {
   USER = "/user",
-  TYPE = "/type",
+  DEVICE_TYPE = "/device-type",
   BRAND = "/brand",
   DEVICE = "/device"
 }
@@ -14,7 +14,7 @@ enum Routes {
 export const routes = Router();
 
 routes.use(Routes.USER, UserRouter);
-routes.use(Routes.TYPE, DeviceTypeRouter);
+routes.use(Routes.DEVICE_TYPE, DeviceTypeRouter);
 routes.use(Routes.BRAND, BrandRouter);
 routes.use(Routes.DEVICE, DeviceRouter);
 
