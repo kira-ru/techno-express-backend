@@ -1,8 +1,5 @@
 import {
-  DeviceDTO,
-  RequestWithFiles,
-  DeviceI,
-  DeviceInformation
+    DeviceDTO, DeviceModel
 } from '@/controllers/device/device.types.ts';
 import {Create, Get, GetAll} from '@/controllers/interfaces';
 import {Device, DeviceInfo} from '@/models/db';
@@ -13,98 +10,101 @@ import {v4 as uuidv4} from 'uuid';
 import {Model} from "sequelize";
 
 export class DeviceController implements Create, GetAll, Get {
-  async create(req: RequestWithFiles, res: Response, next: NextFunction): Promise<Response<DeviceDTO>> {
-    try {
-      const {
-        name,
-        price,
-        brandId,
-        deviceTypeId,
-        info
-      } = req.body as DeviceI;
-      // @ts-expect-error img
-      const { img } = req.files;
-      const imageFileName = uuidv4() + ".jpg";
-      img.mv(resolve(__dirname, '../..', 'static', imageFileName));
+    async create(req: Request, res: Response, next: NextFunction): Promise<Response<DeviceDTO>> {
+        try {
+            const {
+                name,
+                price,
+                BrandId,
+                DeviceTypeId,
+            } = req.body as DeviceModel;
+            const {img} = req.files;
+            const imageFileName = uuidv4() + ".jpg";
+            Array.isArray(img)
+                ? await img[0].mv(resolve(__dirname, '../..', 'static', imageFileName))
+                : await img.mv(resolve(__dirname, '../..', 'static', imageFileName));
 
-      const device = await Device.create({
-        name,
-        price,
-        BrandId: brandId,
-        DeviceTypeId: deviceTypeId,
-        img: imageFileName
-      }) as Model<DeviceDTO>;
+            const device = await Device.create({
+                name,
+                price,
+                BrandId: BrandId,
+                DeviceTypeId: DeviceTypeId,
+                img: imageFileName
+            }) as Model<DeviceDTO>;
 
-      if (info) return res.json(device);
-      const allInfo: DeviceInformation[] = JSON.parse(info);
-      allInfo.forEach(info => {
-        DeviceInfo.create({
-          title: info.title,
-          description: info.description,
-          deviceId: device.dataValues.id,
+            //todo info logic
+            // if (info) return res.json(device);
+            // const allInfo: DeviceInformation[] = JSON.parse(info);
+            // allInfo.forEach(info => {
+            //   DeviceInfo.create({
+            //     title: info.title,
+            //     description: info.description,
+            //     deviceId: device.dataValues.id,
+            //   });
+            // });
+            return res.json(device);
+        } catch (e) {
+            next(BaseErrorService.internal(e.message));
+        }
+    }
+
+    async getAll(req: Request, res: Response): Promise<Response<DeviceDTO[]>> {
+        const {
+            brandId,
+            deviceTypeId,
+            limit: limitQuery,
+            page: pageQuery
+        } = req.query;
+        const limit = limitQuery ? +limitQuery : 10;
+        const page = pageQuery ? +pageQuery : 1;
+        const offset = (limit * page) - limit;
+        let devices: Model<DeviceModel>[] = [];
+
+        if (!brandId && !deviceTypeId) {
+            devices = await Device.findAll({
+                limit,
+                offset
+            });
+        } else if (!brandId && deviceTypeId) {
+            devices = await Device.findAll({
+                limit,
+                offset,
+                where: {DeviceTypeId: +deviceTypeId}
+            });
+        } else if (brandId && !deviceTypeId) {
+            devices = await Device.findAll({
+                limit,
+                offset,
+                where: {BrandId: +brandId}
+            });
+        } else if (brandId && deviceTypeId) {
+            devices = await Device.findAll({
+                limit,
+                offset,
+                where: {
+                    DeviceTypeId: +deviceTypeId,
+                    BrandId: +brandId
+                }
+            });
+        }
+
+        return res.json(devices.map(device => new DeviceDTO(device.dataValues)));
+    }
+
+    async get(req: Request, res: Response<DeviceDTO>, next: NextFunction): Promise<unknown> {
+        const {id} = req.params;
+        if (!id) next(BaseErrorService.badRequest('device id is missing'));
+        const device: Model<DeviceModel> = await Device.findOne({
+            where: {id},
+            include: [
+                {
+                    model: DeviceInfo,
+                    as: 'info'
+                }
+            ]
         });
-      });
-      return res.json(device);
-    } catch (e) {
-      next(BaseErrorService.internal(e.message));
+        return res.json(new DeviceDTO(device.dataValues));
     }
-  }
-
-  async getAll(req: Request, res: Response): Promise<Response<typeof Device[]>> {
-    const {
-      brandId,
-      deviceTypeId,
-      limit: limitQuery,
-      page: pageQuery
-    } = req.query;
-    const limit = limitQuery ? +limitQuery : 10;
-    const page = pageQuery ? +pageQuery : 1;
-    const offset = (limit * page) - limit;
-    if (!brandId && !deviceTypeId) {
-      return res.json(await Device.findAll({
-        limit,
-        offset
-      }));
-    }
-    if (!brandId && deviceTypeId) {
-      return res.json(await Device.findAll({
-        limit,
-        offset,
-        where: { DeviceTypeId: deviceTypeId }
-      }));
-    }
-    if (brandId && !deviceTypeId) {
-      return res.json(await Device.findAll({
-        limit,
-        offset,
-        where: { BrandId: brandId }
-      }));
-    }
-    if (brandId && deviceTypeId) {
-      return res.json(await Device.findAll({
-        limit,
-        offset,
-        where: {
-          DeviceTypeId: deviceTypeId,
-          BrandId: brandId
-        }
-      }));
-    }
-  }
-
-  async get(req: Request, res: Response<unknown>, next: NextFunction): Promise<unknown> {
-    const { id } = req.params;
-    if (!id) next(BaseErrorService.badRequest('device id is missing'));
-    return res.json(await Device.findOne({
-      where: { id },
-      include: [
-        {
-          model: DeviceInfo,
-          as: 'info'
-        }
-      ]
-    }));
-  }
 }
 
 export default new DeviceController();

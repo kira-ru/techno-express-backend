@@ -16,11 +16,12 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
     },
     "typeRoots": [
       "./node_modules/@types",
-      "./node_modules/sequelize/types"
+      "./node_modules/sequelize/types",
+      "./src/types"
     ]
   }
 }
