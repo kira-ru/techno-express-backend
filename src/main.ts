@@ -1,12 +1,13 @@
-import {errorMiddleware} from '@/middlewares/error.middleware.ts';
-import express from 'express';
-import {resolve} from 'path';
-import process from 'process';
-import cors from 'cors';
 import {sequelize} from '@/config/database';
+import {errorMiddleware} from '@/middlewares/error.middleware.ts';
 import {setTableRelationships} from '@/models/utils/setTableRelationships.ts';
 import {routes} from '@/routes';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import express from 'express';
 import fileUploader from 'express-fileupload';
+import {resolve} from 'path';
+import process from 'process';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(function (req, res, next) {
 });
 app.use(fileUploader({debug: true}));
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(resolve(__dirname, 'static')));
 app.use(routes);

@@ -1,8 +1,8 @@
+import {Roles, UserModel} from "@/controllers/user/user.types.ts";
 import {User} from '@/models/db';
-import {Model} from 'sequelize';
 import {JsonWebToken, TokenService} from "@/service/token.service.ts";
 import {Nullable} from "@/types/helpers.ts";
-import {Roles, UserModel} from "@/controllers/user/user.types.ts";
+import {Model} from 'sequelize';
 
 export type UserData = {
   user?: Model<UserModel>,
@@ -51,7 +51,9 @@ class UserService {
       }
     }
 
-
+  public async logout(refreshToken: string): Promise<void> {
+      await this.tokenService.delete(refreshToken);
+  }
 }
 
 export default new UserService(

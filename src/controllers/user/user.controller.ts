@@ -1,9 +1,9 @@
+import {UserDTO} from "@/controllers/user/user.types.ts";
 import {BaseErrorService} from '@/service/base-error.service.ts';
+import {TokenService} from "@/service/token.service.ts";
 import UserService from '@/service/user.service.ts';
 import bcrypt from 'bcrypt';
 import {NextFunction, Request, Response} from 'express';
-import {TokenService} from "@/service/token.service.ts";
-import {UserDTO} from "@/controllers/user/user.types.ts";
 
 class UserController {
     async registration(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -28,10 +28,16 @@ class UserController {
         if (!userData.user) return next(BaseErrorService.badRequest('Пользователь не найден'));
         if (!bcrypt.compareSync(password, userData.user.dataValues.password))
             return next(BaseErrorService.badRequest('Неверный логин или пароль'));
+        res.cookie('refreshToken', userData.tokens.refreshToken, {maxAge: TokenService.REFRESH_TOKEN_EXPIRE_TIME, httpOnly: true});
         res.json({user: new UserDTO(userData.user.dataValues), token: userData.tokens});
     }
 
-    // async auth(req: Request, res: Response, next: NextFunction): Promise<void> {}
+    async logout(req: Request, res: Response): Promise<void> {
+        const {refreshToken} = req.cookies;
+        res.clearCookie('refreshToken');
+        await UserService.logout(refreshToken);
+        res.json({message: 'logout success'});
+    }
 }
 
 export default new UserController();
