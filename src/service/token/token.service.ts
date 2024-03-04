@@ -1,20 +1,10 @@
 import {Roles} from "@/controllers/user/user.types.ts";
-import {Token} from "@/models/db/token";
+import {Token} from "@/models/db/token.ts";
+import {JsonWebToken, JWTPayload, VerifyResult} from '@/service/token/token.interfaces.ts';
 import {Nullable} from '@/types/helpers.ts';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import process from "process";
-import {Model} from "sequelize";
-
-export interface JsonWebToken {
-  accessToken: string,
-  refreshToken: string,
-}
-
-export interface TokenModel {
-  refreshToken: string,
-  userId: number,
-}
 
 export class TokenService {
   public static readonly REFRESH_TOKEN_EXPIRE_TIME = 24 * 60 * 60 * 1000;
@@ -50,9 +40,9 @@ export class TokenService {
   }
 
   public async save(refreshToken: string, userId: number): Promise<void> {
-    const tokenModel: Model<TokenModel> = await Token.findOne({ where: { UserId: userId } });
+    const tokenModel = await Token.findOne({ where: { UserId: userId } });
     if (tokenModel) {
-      tokenModel.dataValues.refreshToken = refreshToken;
+      tokenModel['refreshToken'] = refreshToken;
       await tokenModel.save();
     } else {
       await Token.create({
@@ -69,5 +59,25 @@ export class TokenService {
       console.error(e);
       return null;
     }
+  }
+
+  public async verify<T>(refreshToken: string): Promise<Nullable<JWTPayload<T>>> {
+    try {
+      const token = await Token.findOne({where: {refreshToken}});
+      const payload = this.tokenVerify<T>(refreshToken);
+      if (payload.error || !token) return null;
+      return payload.decoded;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  }
+
+  private tokenVerify<T>(token: string): VerifyResult<T> {
+      let jwtPayload!: VerifyResult<T>;
+      jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
+        jwtPayload = {error, decoded: decoded as JWTPayload<T>};
+      });
+      return jwtPayload;
   }
 }

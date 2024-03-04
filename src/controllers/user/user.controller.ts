@@ -1,6 +1,6 @@
 import {UserDTO} from "@/controllers/user/user.types.ts";
 import {BaseErrorService} from '@/service/base-error.service.ts';
-import {TokenService} from "@/service/token.service.ts";
+import {TokenService} from "@/service/token/token.service.ts";
 import UserService from '@/service/user.service.ts';
 import bcrypt from 'bcrypt';
 import {NextFunction, Request, Response} from 'express';
@@ -37,6 +37,14 @@ class UserController {
         res.clearCookie('refreshToken');
         await UserService.logout(refreshToken);
         res.json({message: 'logout success'});
+    }
+
+
+    async refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const {refreshToken} = req.cookies;
+        const userData = refreshToken && await UserService.refresh(refreshToken);
+        if (!refreshToken || !userData.tokens) return next(BaseErrorService.unauthorized('Ошибка авторизации'));
+        res.json({user: new UserDTO(userData.user.dataValues), tokens: userData.tokens});
     }
 }
 

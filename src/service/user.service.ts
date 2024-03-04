@@ -1,6 +1,7 @@
-import {Roles, UserModel} from "@/controllers/user/user.types.ts";
+import {Roles, UserDTO, UserModel} from "@/controllers/user/user.types.ts";
 import {User} from '@/models/db';
-import {JsonWebToken, TokenService} from "@/service/token.service.ts";
+import {JsonWebToken} from '@/service/token/token.interfaces.ts';
+import {TokenService} from "@/service/token/token.service.ts";
 import {Nullable} from "@/types/helpers.ts";
 import {Model} from 'sequelize';
 
@@ -31,7 +32,7 @@ class UserService {
                 user.dataValues.email,
                 user.dataValues.role
             );
-            await this.tokenService.save(tokens.refreshToken, +user.dataValues.id);
+            void this.tokenService.save(tokens.refreshToken, +user.dataValues.id);
             return {user, tokens};
         } catch (e) {
             console.error(e);
@@ -44,6 +45,7 @@ class UserService {
         const user: Model<UserModel> = await User.findOne({ where: { email } });
         if (!user) return {user: undefined};
         const tokens = this.tokenService.generateUserToken(user.dataValues.id, user.dataValues.email, user.dataValues.role);
+        void this.tokenService.save(tokens.refreshToken, +user.dataValues.id);
         return {user, tokens};
       } catch (e) {
         console.error(e);
@@ -53,6 +55,20 @@ class UserService {
 
   public async logout(refreshToken: string): Promise<void> {
       await this.tokenService.delete(refreshToken);
+  }
+
+  public async refresh(refreshToken: string): Promise<UserData> {
+   const userPayload =  await this.tokenService.verify<UserDTO>(refreshToken);
+   if (!userPayload) return {tokens: undefined};
+
+   const user: Model<UserModel> = await User.findByPk(userPayload.id);
+   const tokens = this.tokenService.generateUserToken(
+       user.dataValues.id,
+       user.dataValues.email,
+       user.dataValues.role,
+   );
+   void this.tokenService.save(tokens.refreshToken, +userPayload.id);
+   return {user, tokens};
   }
 }
 
