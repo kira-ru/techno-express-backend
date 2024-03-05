@@ -1,6 +1,6 @@
 import {UserDTO} from "@/controllers/user/user.types.ts";
 import {BaseErrorService} from '@/service/base-error.service.ts';
-import {TokenService} from "@/service/token/token.service.ts";
+import {TokenService} from '@/service/token/token.service.ts';
 import UserService from '@/service/user.service.ts';
 import bcrypt from 'bcrypt';
 import {NextFunction, Request, Response} from 'express';
@@ -45,6 +45,13 @@ class UserController {
         const userData = refreshToken && await UserService.refresh(refreshToken);
         if (!refreshToken || !userData.tokens) return next(BaseErrorService.unauthorized('Ошибка авторизации'));
         res.json({user: new UserDTO(userData.user.dataValues), tokens: userData.tokens});
+    }
+
+    async getUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const {id} = req.params;
+        if (!id || isNaN(+id)) return next(BaseErrorService.internal('не указат id'));
+        const user =  await UserService.getUser(+id);
+        res.json({user: new UserDTO(user.dataValues)});
     }
 }
 

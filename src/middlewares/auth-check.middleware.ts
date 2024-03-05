@@ -1,14 +1,17 @@
+import {UserDTO} from '@/controllers/user/user.types.ts';
+import {BaseErrorService} from '@/service/base-error.service.ts';
+import TokenService from '@/service/token/token.service.ts';
 import {HttpStatus} from '@/types/http-statuses.ts';
 import {NextFunction, Request, Response} from 'express';
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction): unknown {
-  if (![ "GET", "POST", "PUT", "DELETE" ].includes(req.method)) next();
   try {
-    const token = req.headers?.authorization?.split(" ")[1]; // bearer
-    if (!token) return res.status(HttpStatus.CODE401).json({ message: "Не авторизован" });
-    console.log('auth check middleware work!');
-    //todo check user token
-    // const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const accessToken = req.headers?.authorization;
+    const result = accessToken && TokenService.tokenVerify<UserDTO>(accessToken, false);
+    if (!accessToken || result.error) {
+      return next(BaseErrorService.unauthorized(result.error.message ?? ''));
+    }
+    req.user = result.decoded;
   } catch {
     res.status(HttpStatus.CODE401).json({ message: "Не авторизован" });
   }

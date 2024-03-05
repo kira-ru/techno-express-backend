@@ -17,7 +17,7 @@ export class TokenService {
           email,
           role
         },
-        process.env.SECRET_KEY,
+        process.env.JWT_REFRESH_SECRET,
         { expiresIn: TokenService.REFRESH_TOKEN_EXPIRE_TIME }
     );
     const accessToken = jwt.sign(
@@ -26,7 +26,7 @@ export class TokenService {
           email,
           role
         },
-        process.env.SECRET_KEY,
+        process.env.JWT_ACCESS_SECRET,
         { expiresIn: TokenService.ACCESS_TOKEN_EXPIRE_TIME }
     );
     return {
@@ -73,11 +73,16 @@ export class TokenService {
     }
   }
 
-  private tokenVerify<T>(token: string): VerifyResult<T> {
+  public tokenVerify<T>(token: string, isRefresh=true): VerifyResult<T> {
       let jwtPayload!: VerifyResult<T>;
-      jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
+      jwt.verify(
+          token,
+          isRefresh ? process.env.JWT_REFRESH_SECRET : process.env.JWT_ACCESS_SECRET,
+          (error, decoded) => {
         jwtPayload = {error, decoded: decoded as JWTPayload<T>};
       });
       return jwtPayload;
   }
 }
+
+export default new TokenService();

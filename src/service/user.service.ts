@@ -1,7 +1,7 @@
 import {Roles, UserDTO, UserModel} from "@/controllers/user/user.types.ts";
 import {User} from '@/models/db';
 import {JsonWebToken} from '@/service/token/token.interfaces.ts';
-import {TokenService} from "@/service/token/token.service.ts";
+import TokenService from '@/service/token/token.service.ts';
 import {Nullable} from "@/types/helpers.ts";
 import {Model} from 'sequelize';
 
@@ -11,9 +11,9 @@ export type UserData = {
 }
 
 class UserService {
-    private tokenService: TokenService;
+    private tokenService: typeof TokenService;
 
-    constructor(tokenService: TokenService) {
+    constructor(tokenService: typeof TokenService) {
         this.tokenService = tokenService;
     }
 
@@ -70,8 +70,12 @@ class UserService {
    void this.tokenService.save(tokens.refreshToken, +userPayload.id);
    return {user, tokens};
   }
+
+  public async getUser(id: number): Promise<Model<UserModel> | null> {
+      return User.findByPk(id);
+  }
 }
 
 export default new UserService(
-    new TokenService()
+    TokenService
 );
