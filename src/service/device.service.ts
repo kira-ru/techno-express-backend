@@ -1,6 +1,6 @@
-import {DeviceDTO, DeviceModel} from '@/controllers/device/device.types.ts';
+import {DeviceDTO, DeviceModel} from '@/controllers/device/device.types';
 import {Device, DeviceInfo} from '@/models/db';
-import {Nullable} from '@/types/helpers.ts';
+import {Nullable} from '@/types/helpers';
 import {UploadedFile} from 'express-fileupload';
 import {resolve} from 'path';
 import {Model} from 'sequelize';

@@ -1,5 +1,5 @@
 import {Basket, BasketDevice, Brand, BrandType, Device, DeviceInfo, DeviceType, Rating, User} from '@/models/db';
-import {Token} from "@/models/db/token.ts";
+import {Token} from "@/models/db/token";
 
 export function setTableRelationships(): void {
   Device.hasMany(Rating);

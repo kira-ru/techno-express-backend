@@ -1,7 +1,7 @@
-import {BrandRouter} from '@/routes/brand.router.ts';
-import {DeviceTypeRouter} from '@/routes/device-type.router.ts';
-import {DeviceRouter} from '@/routes/device.router.ts';
-import {UserRouter} from '@/routes/user.router.ts';
+import {BrandRouter} from '@/routes/brand.router';
+import {DeviceTypeRouter} from '@/routes/device-type.router';
+import {DeviceRouter} from '@/routes/device.router';
+import {UserRouter} from '@/routes/user.router';
 import {Router} from 'express';
 
 enum Routes {

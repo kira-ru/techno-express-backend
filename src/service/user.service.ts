@@ -1,8 +1,8 @@
-import {Roles, UserDTO, UserModel} from "@/controllers/user/user.types.ts";
+import {Roles, UserDTO, UserModel} from "@/controllers/user/user.types";
 import {User} from '@/models/db';
-import {JsonWebToken} from '@/service/token/token.interfaces.ts';
-import TokenService from '@/service/token/token.service.ts';
-import {Nullable} from "@/types/helpers.ts";
+import {JsonWebToken} from '@/service/token/token.interfaces';
+import TokenService from '@/service/token/token.service';
+import {Nullable} from "@/types/helpers";
 import {Model} from 'sequelize';
 
 export type UserData = {

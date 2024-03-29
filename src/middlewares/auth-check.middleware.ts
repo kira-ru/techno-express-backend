@@ -1,7 +1,7 @@
-import {UserDTO} from '@/controllers/user/user.types.ts';
-import {BaseErrorService} from '@/service/base-error.service.ts';
-import TokenService from '@/service/token/token.service.ts';
-import {HttpStatus} from '@/types/http-statuses.ts';
+import {UserDTO} from '@/controllers/user/user.types';
+import {BaseErrorService} from '@/service/base-error.service';
+import TokenService from '@/service/token/token.service';
+import {HttpStatus} from '@/types/http-statuses';
 import {NextFunction, Request, Response} from 'express';
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction): unknown {

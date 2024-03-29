@@ -1,4 +1,4 @@
-import BrandController from '@/controllers/brand.controller.ts';
+import BrandController from '@/controllers/brand.controller';
 import {Router} from 'express';
 
 export const BrandRouter = Router();

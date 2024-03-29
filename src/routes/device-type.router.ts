@@ -1,4 +1,4 @@
-import DeviceTypeController from '@/controllers/device-type.controller.ts';
+import DeviceTypeController from '@/controllers/device-type.controller';
 import {Router} from 'express';
 
 export const DeviceTypeRouter = Router();

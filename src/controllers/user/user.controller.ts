@@ -1,7 +1,7 @@
-import {UserDTO} from "@/controllers/user/user.types.ts";
-import {BaseErrorService} from '@/service/base-error.service.ts';
-import {TokenService} from '@/service/token/token.service.ts';
-import UserService from '@/service/user.service.ts';
+import {UserDTO} from "@/controllers/user/user.types";
+import {BaseErrorService} from '@/service/base-error.service';
+import {TokenService} from '@/service/token/token.service';
+import UserService from '@/service/user.service';
 import bcrypt from 'bcrypt';
 import {NextFunction, Request, Response} from 'express';
 

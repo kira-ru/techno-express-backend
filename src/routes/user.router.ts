@@ -1,5 +1,5 @@
-import UserController from '@/controllers/user/user.controller.ts';
-import {authMiddleware} from '@/middlewares/auth-check.middleware.ts';
+import UserController from '@/controllers/user/user.controller';
+import {authMiddleware} from '@/middlewares/auth-check.middleware';
 import {Router} from 'express';
 
 enum Routes {

@@ -1,7 +1,7 @@
-import {DeviceDTO, DeviceModel} from '@/controllers/device/device.types.ts';
+import {DeviceDTO, DeviceModel} from '@/controllers/device/device.types';
 import {Create, Get, GetAll} from '@/controllers/interfaces';
-import {BaseErrorService} from '@/service/base-error.service.ts';
-import DeviceService, {DeviceFilter} from '@/service/device.service.ts';
+import {BaseErrorService} from '@/service/base-error.service';
+import DeviceService, {DeviceFilter} from '@/service/device.service';
 import {NextFunction, Request, Response} from 'express';
 
 export class DeviceController implements Create, GetAll, Get {

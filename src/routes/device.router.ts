@@ -1,4 +1,4 @@
-import DeviceController from '@/controllers/device/device.controller.ts';
+import DeviceController from '@/controllers/device/device.controller';
 import {Router} from 'express';
 
 export const DeviceRouter = Router();

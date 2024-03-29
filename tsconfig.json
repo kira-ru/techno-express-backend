@@ -5,26 +5,31 @@
   "files": [
     "src/types/global.d.ts",
   ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "NodeNext",
     "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "NodeNext",
+
     "outDir": "build",
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
       "@/*": [
         "./src/*"
-      ],
+      ]
     },
     "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/sequelize/types",
-      "./src/types"
+      "./node_modules/@types"
+
     ]
   }
 }

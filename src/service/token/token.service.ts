@@ -1,7 +1,7 @@
-import {Roles} from "@/controllers/user/user.types.ts";
-import {Token} from "@/models/db/token.ts";
-import {JsonWebToken, JWTPayload, VerifyResult} from '@/service/token/token.interfaces.ts';
-import {Nullable} from '@/types/helpers.ts';
+import {Roles} from "@/controllers/user/user.types";
+import {Token} from "@/models/db/token";
+import {JsonWebToken, JWTPayload, VerifyResult} from '@/service/token/token.interfaces';
+import {Nullable} from '@/types/helpers';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import process from "process";

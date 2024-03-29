@@ -1,4 +1,4 @@
-import {HttpStatus} from '@/types/http-statuses.ts';
+import {HttpStatus} from '@/types/http-statuses';
 
 export class BaseErrorService extends Error {
   public status: HttpStatus;
