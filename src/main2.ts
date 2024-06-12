@@ -1,29 +1,29 @@
 
 
-// function work(a: number, b: number): number {
-//     return a + b;
-// }
-//
-// const spy = (func: (...args: unknown[]) => unknown): SpyFunction<number> => {
-//     function wrapper(...args: unknown[]): unknown {
-//         wrapper.calls.push(args);
-//         return func(args);
-//     }
-//         wrapper.calls = [];
-//     return wrapper;
-// };
-// interface SpyFunction<T>{
-//     (...args: unknown[]): unknown,
-//     calls?: T[][],
-// }
-//
-// const spyWork = spy(work);
-// spyWork(1, 2); // 3
-// spyWork(4, 5); // 9
+function work(a: number, b: number): number {
+    return a + b;
+}
 
-// for (const args of spyWork.calls) {
-//     console.log(args.join());
-// }
+const spy = (func: (...args: unknown[]) => unknown): SpyFunction<number> => {
+    function wrapper(...args: unknown[]): unknown {
+        wrapper.calls.push(args);
+        return func(args);
+    }
+        wrapper.calls = [];
+    return wrapper;
+};
+interface SpyFunction<T>{
+    (...args: unknown[]): unknown,
+    calls?: T[][],
+}
+
+const spyWork = spy(work);
+spyWork(1, 2); // 3
+spyWork(4, 5); // 9
+
+for (const args of spyWork.calls) {
+    console.log(args.join());
+}
 
 // ///remove dupl
 // function removeDuplicates(nums: number[]): number[] {
