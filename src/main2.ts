@@ -1,6 +1,11 @@
-function work(a: number, c: number): number {
+function work(a: number, d: number): number {
+    return a + d;
+}
+
+function work2(a: number, c: number): number {
     return a + c;
 }
+
 const spy = (func: (...args: unknown[]) => unknown): SpyFunction<number> => {
     function wrapper(...args: unknown[]): unknown {
         wrapper.calls.push(args);
@@ -15,6 +20,8 @@ interface SpyFunction<T>{
 }
 
 const spyWork = spy(work);
+const spyWork2 = spy(work2);
+spyWork2(1, 2);
 spyWork(1, 2); // 3
 spyWork(4, 5); // 9
 
