@@ -1,9 +1,8 @@
 
 
-function work(a: number, b: number): number {
-    return a + b;
+function work(a: number, c: number): number {
+    return a + c;
 }
-
 const spy = (func: (...args: unknown[]) => unknown): SpyFunction<number> => {
     function wrapper(...args: unknown[]): unknown {
         wrapper.calls.push(args);
