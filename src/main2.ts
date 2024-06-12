@@ -1,7 +1,6 @@
-function work(a: number, d: number, b?: number): number {
+function work(a: number, c: number, b?: number): number {
     if (b) return b;
-    return a + d;
-}
+    return a + c;
 
 function work2(a: number, c: number): number {
     return a + c;
@@ -16,6 +15,7 @@ const spy = (func: (...args: unknown[]) => unknown): SpyFunction<number> => {
     return wrapper;
 };
 interface SpyFunction<T>{
+    id?: string,
     (...args: unknown[]): unknown,
     calls?: T[][],
 }
