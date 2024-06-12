@@ -1,4 +1,5 @@
-function work(a: number, d: number): number {
+function work(a: number, d: number, b?: number): number {
+    if (b) return b;
     return a + d;
 }
 
