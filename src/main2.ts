@@ -1,5 +1,3 @@
-
-
 function work(a: number, c: number): number {
     return a + c;
 }
@@ -51,10 +49,11 @@ console.log(removeDuplicates(input));
 const obj = {
     name: 'kirill',
     getName(): void {
-        setTimeout(function() {
+        setTimeout(function () {
             console.log(this);
         }, 1000);
         this.name = 'sasha';
+    }
 };
 
 obj.getName();
